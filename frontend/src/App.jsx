@@ -14,7 +14,7 @@ const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token")); //read token from browser storage
 
 
-  const API_URL = `${import.meta.env.VITE_API_URL}/api/users`;
+ const API_URL = `${import.meta.env.VITE_API_URL}/users`;
 
   // //  fetch users 
   useEffect(() => {
@@ -40,7 +40,7 @@ const App = () => {
   // register
   const registerUser = async () => {
     try {
-      await axios.post(`${API_URL}/register`, {
+      await axios.post(`${API_URL}`, {
         name,
         age,
         email,
@@ -73,6 +73,8 @@ const App = () => {
       alert("Login success");
 
       setToken(res.data.token); //trigger useeffect
+      setEmail("");      // <-- CLEAR
+      setPassword("");
     } catch (err) {
       console.log(err);
     }
@@ -80,7 +82,7 @@ const App = () => {
 
   // add user
   const addUser = async () => {
-    if (!name || !age || !email) {
+    if (!name || !age || !email || !password) {
       alert("All fields required");
       return;
     }
@@ -93,7 +95,7 @@ const App = () => {
     try {
       const res = await axios.post(
         `${API_URL}`,
-        { name, age, email },
+        { name, age, email, password },
         {
           headers: { Authorization: `Bearer ${token}` },
         },
