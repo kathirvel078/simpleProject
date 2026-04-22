@@ -13,11 +13,12 @@ app.use(express.json());
 app.use("/api/users",userRoutes)
 
 
-mongoose.connect("mongodb://127.0.0.1:27017/myapp")
+mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log("DB is Connected"))
   .catch(err => console.log(err));
 
+  const PORT=process.env.PORT ||3000
 
-app.listen(3000, (req, res)=>{
+app.listen(PORT, (req, res)=>{
     console.log("server is running in port 3000")
 })
