@@ -14,7 +14,7 @@ const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token")); //read token from browser storage
 
 
- const API_URL = `${import.meta.env.VITE_API_URL}/users`;
+ const API_URL = `${import.meta.env.VITE_API_URL}/api/users`;
 
   // //  fetch users 
   useEffect(() => {

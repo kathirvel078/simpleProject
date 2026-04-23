@@ -5,7 +5,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const auth = require("../middleWare/auth.js");
 
-const SECRET_KEY = "mysecretkey"; //.env
+const SECRET_KEY = process.env.JWT_SECRET;
+// const SECRET_KEY = "mysecretkey"; //.env
 
 //get
 router.get("/", auth, async (req, res) => {
@@ -19,12 +20,15 @@ router.get("/", auth, async (req, res) => {
 
 //post
 
-router.post("/register", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { name, age, email, password } = req.body; //get data from frontEnd
     if (!name || !email) {
       return res.status(400).json({ msg: "Name and Email Required" });
     }
+    if (!password) {   // <-- ADD THIS CHECK
+      return res.status(400).json({ msg: "Password required" });
+    } 
     // check duplicate email
     const existing = await User.findOne({ email });
     if (existing) {
@@ -69,6 +73,10 @@ router.post("/login", async (req, res) => {
 
 router.put("/:id", auth, async (req, res) => {
   try {
+    if (req.body.password) {
+      req.body.password = await bcrypt.hash(req.body.password, 10);
+    }
+
     const updated = await User.findByIdAndUpdate(
       req.params.id, //url to get id
       req.body,
