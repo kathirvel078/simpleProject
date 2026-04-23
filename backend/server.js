@@ -9,7 +9,13 @@ const userRoutes=require("./routes/userRoutes.js");
 const app=express();
 
 app.use(cors({
-  origin: "https://simple-project-five-ashen.vercel.app"
+  origin: (origin, callback) => {
+  if (!origin || origin.includes("vercel.app") || origin.includes("localhost")) {
+    callback(null, true);
+  } else {
+    callback(new Error("CORS blocked"));
+  }
+}
 })); 
 app.use(express.json());
 
