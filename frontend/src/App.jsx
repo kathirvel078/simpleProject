@@ -77,6 +77,9 @@ const App = () => {
       setPassword("");
     } catch (err) {
       console.log(err);
+      alert(
+      err.response?.data?.message || "Login failed"
+    );
     }
   };
 
@@ -110,6 +113,9 @@ const App = () => {
       setEmail("");
     } catch (err) {
       console.log(err);
+      alert(
+      err.response?.data?.message || "User creation failed"
+    );
     }
   };
 
